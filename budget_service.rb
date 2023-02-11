@@ -15,16 +15,16 @@ class BudgetService
 
     if start_date.month == end_date.month
       budget_hash[start_date.strftime('%Y%m')] * ratio(start_date, end_date)
-    elsif end_date.month - start_date.month == 1
+    elsif end_date.month != start_date.month
       budget_hash[start_date.strftime('%Y%m')] * ratio(start_date, last_day_in_month(start_date)) +
-        budget_hash[end_date.strftime('%Y%m')] * ratio(first_day_in_month(end_date), end_date)
+        budget_hash[end_date.strftime('%Y%m')] * ratio(first_day_in_month(end_date), end_date) +
+        whole_month_budget_between(start_date, end_date, budget_hash)
     end
   end
 
   private
 
   def ratio(start_date, end_date)
-    # last_day_in_month = Date.new(2023, start_date.strftime('%m').to_i, -1)
     partial_day = (end_date - start_date).to_i + 1
     days_in_month = last_day_in_month(start_date).day.to_f
     partial_day / days_in_month
@@ -36,5 +36,16 @@ class BudgetService
 
   def first_day_in_month(start_date)
     Date.new(start_date.strftime('%Y').to_i, start_date.strftime('%m').to_i, 1)
+  end
+
+  def whole_month_budget_between(start_date, end_date, budget_hash)
+    sum = 0
+    date = start_date
+    while date.next_month.strftime('%Y%m') != end_date.strftime('%Y%m')
+      sum += budget_hash[date.next_month.strftime('%Y%m')]
+      date = date.next_month
+    end
+
+    sum
   end
 end

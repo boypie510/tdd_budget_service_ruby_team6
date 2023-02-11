@@ -14,7 +14,8 @@ RSpec.describe BudgetService do
       [
         Budget.new('202303', 31_000),
         Budget.new('202304', 6_000),
-        Budget.new('202305', 0)
+        Budget.new('202305', 0),
+        Budget.new('202306', 9_0000),
       ]
     end
     context 'with budget data from budgetrepo get_all method' do
@@ -45,10 +46,16 @@ RSpec.describe BudgetService do
         it { is_expected.to eq(0) }
       end
 
-      context 'start_date 2023/03/31, end_date 2023/04/02' do
+      context 'start_date 2023/03/30, end_date 2023/04/02' do
         let(:start_date) { DateTime.new(2023, 3, 30) }
         let(:end_date) { DateTime.new(2023, 4, 2) }
         it { is_expected.to eq(2400) }
+      end
+
+      context 'start_date 2023/03/30, end_date 2023/06/01' do
+        let(:start_date) { DateTime.new(2023, 3, 30) }
+        let(:end_date) { DateTime.new(2023, 6, 1) }
+        it { is_expected.to eq(11000) }
       end
     end
   end
