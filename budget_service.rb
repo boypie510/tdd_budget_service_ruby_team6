@@ -5,6 +5,7 @@ class BudgetService
   def initialize
   end
 
-  def query
+  def query(start_date, end_date)
+    return 1000
   end
 end
