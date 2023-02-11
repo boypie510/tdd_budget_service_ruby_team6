@@ -12,7 +12,8 @@ RSpec.describe BudgetService do
   describe '#query' do
     let(:budget_array) do
       [
-        Budget.new('202303', 31000),
+        Budget.new('202303', 31_000),
+        Budget.new('202304', 60_000)
       ]
     end
     context '2023 march data budget: 31000' do
@@ -29,6 +30,12 @@ RSpec.describe BudgetService do
         let(:start_date) { DateTime.new(2023, 3, 1) }
         let(:end_date) { DateTime.new(2023, 3, 2) }
         it { is_expected.to eq(2000) }
+      end
+
+      context 'start_date 2023/04/01, end_date 2023/04/02' do
+        let(:start_date) { DateTime.new(2023, 4, 1) }
+        let(:end_date) { DateTime.new(2023, 4, 2) }
+        it { is_expected.to eq(4000) }
       end
     end
   end
